@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anirud Uppalapati — Senior Software Engineer</title>
+<meta name="description" content="Anirud Uppalapati — Senior Software Engineer specializing in scalable asynchronous architectures, distributed systems, and automated test-driven pipelines." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          base: {
+            950: '#07080a',
+            900: '#0b0d10',
+            850: '#0f1216',
+            800: '#141821',
+            700: '#1c212b',
+            600: '#2a303c',
+          },
+          accent: {
+            DEFAULT: '#34d399',
+            dim: '#10b981',
+            soft: 'rgba(52,211,153,0.12)',
+          }
+        },
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+          display: ['"Space Grotesk"', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  :root {
+    --accent: #34d399;
+    --accent-dim: #10b981;
+  }
+
+  * { scroll-behavior: smooth; }
+
+  body {
+    background: #07080a;
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(52,211,153,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(96,165,250,0.05) 0%, transparent 35%);
+  }
+
+  ::selection { background: rgba(52,211,153,0.25); color: #fff; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0b0d10; }
+  ::-webkit-scrollbar-thumb { background: #2a303c; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #34d399; }
+
+  /* Grid backdrop */
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.08s; }
+  .reveal-delay-2 { transition-delay: 0.16s; }
+  .reveal-delay-3 { transition-delay: 0.24s; }
+
+  /* Hero fade-up sequence */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+  .fade-up-1 { animation-delay: 0.05s; }
+  .fade-up-2 { animation-delay: 0.18s; }
+  .fade-up-3 { animation-delay: 0.32s; }
+  .fade-up-4 { animation-delay: 0.46s; }
+  .fade-up-5 { animation-delay: 0.6s; }
+
+  /* Typing caret blink for subtitle */
+  @keyframes blink {
+    0%, 45% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  .caret { animation: blink 1s step-end infinite; }
+
+  /* Ambient glow pulse */
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.06); }
+  }
+  .pulse-glow { animation: pulseGlow 5s ease-in-out infinite; }
+
+  /* Orbit ring around avatar */
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .spin-slow { animation: spin-slow 16s linear infinite; }
+
+  /* Card hover lift */
+  .lift-card {
+    transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), border-color 0.45s ease, box-shadow 0.45s ease;
+  }
+  .lift-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: rgba(52,211,153,0.4);
+    box-shadow: 0 20px 60px -20px rgba(52,211,153,0.15);
+  }
+
+  /* Project card slide-in */
+  .slide-in-left { opacity:0; transform: translateX(-32px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .slide-in-right { opacity:0; transform: translateX(32px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .slide-in-left.in-view, .slide-in-right.in-view { opacity:1; transform: translateX(0); }
+
+  /* Timeline node pulse */
+  @keyframes ringPulse {
+    0% { box-shadow: 0 0 0 0 rgba(52,211,153,0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(52,211,153,0); }
+    100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+  }
+  .ring-pulse { animation: ringPulse 2.4s ease-out infinite; }
+
+  /* Timeline vertical line draw */
+  .timeline-line {
+    background: linear-gradient(to bottom, rgba(52,211,153,0.6), rgba(52,211,153,0.05));
+  }
+
+  /* Nav link underline */
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0%; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  /* Icon button hover */
+  .icon-btn {
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .icon-btn:hover {
+    transform: translateY(-4px) rotate(-4deg);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 10px 30px -10px rgba(52,211,153,0.35);
+  }
+
+  /* Tag chip */
+  .tag-chip {
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* System health grid cell */
+  .health-cell {
+    aspect-ratio: 1 / 1;
+    border-radius: 3px;
+    background: #141821;
+    transition: background 0.6s ease, transform 0.3s ease;
+  }
+  .health-cell:hover { transform: scale(1.35); }
+
+  @keyframes cellGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.35); }
+  }
+
+  /* Section label */
+  .section-label {
+    letter-spacing: 0.25em;
+  }
+
+  /* Blinking status dot */
+  @keyframes statusBlink {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.6); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(52,211,153,0); }
+  }
+  .status-dot { animation: statusBlink 2s ease-in-out infinite; }
+
+  /* Scan line effect on avatar frame */
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+  .scanline { animation: scanline 3.2s linear infinite; }
+
+  .mono-num { font-variant-numeric: tabular-nums; }
+
+  /* ===== Skills: Organic 3D Exploded View =====
+   * Cards sit on Fibonacci-sphere direction vectors (organic, non-uniform
+   * spread — the original "exploded parts diagram" look) and drag-orbit
+   * freely on two axes. The scene's rotation is applied in JS (not as a CSS
+   * transform on the parent), so every card's FINAL on-screen x/y is a real
+   * number we can hard-clamp to the canvas edges every frame — see
+   * rotatedPosition()/paint() in initSkillsDiagram() for the actual math.
+   */
+  .skills-viewport {
+    perspective: 1600px;
+    -webkit-perspective: 1600px;
+    overflow: hidden;
+    padding: clamp(20px, 5vw, 56px) clamp(12px, 3vw, 32px);
+    box-sizing: border-box;
+  }
+  #skillsCore {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    pointer-events: none;
+  }
+  /* Connecting-line overlay: sits at the very back (z-index:0), below every
+     card (z-index 50+) and the core (z-index 100), spans the full canvas,
+     and never intercepts the mouse. */
+  .skills-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .skill-line {
+    fill: none;
+    stroke: rgba(16, 185, 129, 0.25);
+    stroke-width: 1.5px;
+    stroke-dasharray: 4 4;
+    transition: stroke 0.25s ease, stroke-width 0.25s ease, filter 0.25s ease;
+  }
+  .skill-line.active {
+    stroke: #10b981;
+    stroke-width: 2.5px;
+    stroke-dasharray: none;
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.8));
+  }
+  .skill-node {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: auto;
+  }
+  /* Opt-in only: applied briefly to every card for deliberate, discrete
+     position jumps (explode slider, reset). Continuous auto-rotate/drag
+     frames deliberately carry NO transition — paint() writes a fresh
+     transform every ~16ms, and a 0.6s transition fighting an update that
+     frequent is what produces erratic, lagging motion (the browser keeps
+     retargeting mid-transition on every single frame). */
+  .skill-node.pos-anim {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .skill-card {
+    min-width: 176px;
+    max-width: 248px;
+    max-height: 192px;
+    overflow-y: auto;
+    /* Solid, fully opaque surface — the core's glow (or anything else)
+       can never bleed through and wash out the pill-badge text, no matter
+       how the card overlaps the core in screen space during rotation. */
+    background: #0B0F17 !important;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    pointer-events: auto !important;
+  }
+  .skill-card::-webkit-scrollbar { width: 4px; }
+  .skill-card::-webkit-scrollbar-thumb { background: rgba(52,211,153,0.3); border-radius: 4px; }
+  /* Card-only hover: border glow, no scale/size change, so the card's own
+     bounding box never moves under the cursor — the mouse target stays
+     rock-solid through the whole hover. The z-index:999 "come to front of
+     everything" part is handled by JS on the ancestor .skill-node (see
+     paint()) — CSS z-index here can't win against the per-frame dynamic
+     depth ordering, since that's set imperatively on a different element. */
+  .skill-card:hover {
+    border-color: #10b981;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+  }
+
+  /* Pill badges: wrap long skill names cleanly instead of stretching into an oval */
+  .skill-card .tag-chip {
+    border-radius: 0.5rem;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 100%;
+    line-height: 1.35;
+    text-align: left;
+    padding: 0.3rem 0.55rem;
+    pointer-events: auto !important;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .skill-card .tag-chip:hover {
+    background: rgba(52,211,153,0.12);
+    border-color: rgba(52,211,153,0.5);
+    color: #34d399;
+  }
+
+  .core-orb {
+    width: 88px; height: 88px; border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, rgba(52,211,153,0.9), rgba(16,185,129,0.25) 55%, transparent 75%);
+    box-shadow: 0 0 60px 10px rgba(52,211,153,0.35), inset 0 0 30px rgba(52,211,153,0.4);
+    animation: coreBeat 3.2s ease-in-out infinite;
+  }
+  @keyframes coreBeat {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.08); filter: brightness(1.25); }
+  }
+  .skills-grab { cursor: grab; }
+  .skills-grab:active { cursor: grabbing; }
+  .explode-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(to right, #34d399, #1c212b);
+    outline: none;
+  }
+  .explode-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 12px rgba(52,211,153,0.7);
+    cursor: pointer;
+    border: 2px solid #07080a;
+  }
+  .explode-range::-moz-range-thumb {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 12px rgba(52,211,153,0.7);
+    cursor: pointer;
+    border: none;
+  }
+</style>
+</head>
+
+<body class="bg-base-950 text-slate-300 font-mono antialiased selection:bg-emerald-500/20">
+
+<!-- ================= NAV ================= -->
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-base-950/70 border-b border-white/5">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+    <a href="#top" class="font-display text-sm font-semibold tracking-tight text-white flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 status-dot"></span>
+      AU<span class="text-emerald-400">.</span>dev
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-xs uppercase tracking-widest text-slate-400">
+      <a href="#philosophy" class="nav-link hover:text-white">Philosophy</a>
+      <a href="#experience" class="nav-link hover:text-white">Experience</a>
+      <a href="#skills" class="nav-link hover:text-white">Skills</a>
+      <a href="#projects" class="nav-link hover:text-white">Projects</a>
+      <a href="#education" class="nav-link hover:text-white">Education</a>
+      <a href="#status" class="nav-link hover:text-white">Status</a>
+      <a href="newsletters.html" class="nav-link hover:text-white">Writing</a>
+    </div>
+    <a href="mailto:saianirudvarmau@gmail.com" class="text-xs px-4 py-2 rounded-full border border-white/10 text-slate-300 hover:border-emerald-400/50 hover:text-emerald-400 transition-colors duration-300">
+      Contact
+    </a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header id="top" class="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden grid-overlay">
+  <div class="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-emerald-500/10 blur-[110px] pulse-glow"></div>
+  <div class="absolute bottom-0 right-0 w-[380px] h-[380px] rounded-full bg-sky-500/10 blur-[110px] pulse-glow" style="animation-delay:1.5s"></div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-10 w-full relative z-10 grid md:grid-cols-[1fr_auto] gap-14 items-center">
+    <div>
+      <p class="fade-up fade-up-1 text-emerald-400 text-xs md:text-sm tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
+        <span class="w-8 h-px bg-emerald-400/60"></span>
+        System Online — New York, NY
+      </p>
+
+      <h1 class="fade-up fade-up-2 font-display text-5xl sm:text-6xl lg:text-7xl font-semibold text-white tracking-tight leading-[1.02]">
+        Anirud<br class="hidden sm:block" /> Uppalapati
+      </h1>
+
+      <h2 class="fade-up fade-up-3 mt-5 text-lg md:text-xl text-slate-300 font-medium">
+        Senior Software Engineer <span class="text-slate-600 mx-1">/</span> Full-Stack &amp; Forward Deployed
+      </h2>
+
+      <p class="fade-up fade-up-4 mt-6 max-w-xl text-sm md:text-base text-slate-400 leading-relaxed">
+        Architecting <span class="text-emerald-400">scalable asynchronous systems</span> and distributed backends that hold up under real production load — wired end-to-end with <span class="text-emerald-400">automated, test-driven delivery pipelines</span><span class="caret text-emerald-400">_</span>
+      </p>
+
+      <div class="fade-up fade-up-5 mt-10 flex flex-wrap items-center gap-4">
+        <a href="mailto:saianirudvarmau@gmail.com" class="group inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-emerald-400 text-base-950 text-sm font-semibold hover:bg-emerald-300 transition-colors duration-300">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+          Get in touch
+        </a>
+        <a href="https://github.com/SaiAnirudVarma" target="_blank" rel="noopener" aria-label="GitHub" class="icon-btn w-12 h-12 flex items-center justify-center rounded-lg border border-white/10 text-slate-300">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .321.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/saianirudvarma" target="_blank" rel="noopener" aria-label="LinkedIn" class="icon-btn w-12 h-12 flex items-center justify-center rounded-lg border border-white/10 text-slate-300">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="tel:216-857-8254" class="icon-btn w-12 h-12 flex items-center justify-center rounded-lg border border-white/10 text-slate-300">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Avatar -->
+    <div class="fade-up fade-up-3 relative mx-auto md:mx-0 w-52 h-52 sm:w-64 sm:h-64 shrink-0">
+      <div class="absolute inset-0 rounded-2xl border border-dashed border-emerald-400/30 spin-slow"></div>
+      <div class="absolute inset-3 rounded-2xl overflow-hidden border border-white/10 bg-base-800 shadow-[0_0_60px_-15px_rgba(52,211,153,0.35)]">
+        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-base-800 via-base-850 to-base-900 relative">
+          <span class="font-display text-6xl font-semibold text-emerald-400/80">AU</span>
+          <div class="absolute left-0 right-0 h-10 bg-gradient-to-b from-transparent via-emerald-400/10 to-transparent scanline"></div>
+        </div>
+      </div>
+      <div class="absolute -bottom-3 -right-3 bg-base-900 border border-white/10 rounded-lg px-3 py-1.5 text-[10px] tracking-widest text-emerald-400 uppercase flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 status-dot"></span>
+        Available
+      </div>
+    </div>
+  </div>
+
+  <a href="#philosophy" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 hover:text-emerald-400 transition-colors duration-300">
+    <span class="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+    <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+  </a>
+</header>
+
+<!-- ================= PHILOSOPHY ================= -->
+<section id="philosophy" class="relative py-28 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-16">
+      <p class="section-label text-emerald-400 text-xs uppercase mb-3">01 · Approach</p>
+      <h3 class="font-display text-3xl md:text-4xl font-semibold text-white">Engineering Philosophy</h3>
+      <p class="text-slate-500 mt-3 max-w-lg text-sm">The execution tenets that shape every system I ship.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal lift-card rounded-2xl border border-white/10 bg-base-900/60 p-8">
+        <div class="w-11 h-11 rounded-lg bg-emerald-400/10 flex items-center justify-center mb-6 text-emerald-400">
+          <i data-lucide="flask-conical" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-display text-lg font-semibold text-white mb-3">Tested by Default</h4>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Automated CI/CD test matrices run on every commit, enforcing structural data integrity before code ever reaches production.
+        </p>
+      </div>
+
+      <div class="reveal reveal-delay-1 lift-card rounded-2xl border border-white/10 bg-base-900/60 p-8">
+        <div class="w-11 h-11 rounded-lg bg-emerald-400/10 flex items-center justify-center mb-6 text-emerald-400">
+          <i data-lucide="server-cog" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-display text-lg font-semibold text-white mb-3">Production-First Architecture</h4>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Low-latency, containerized backend engines built for zero-critical-incident operation at real traffic volume, not demo scale.
+        </p>
+      </div>
+
+      <div class="reveal reveal-delay-2 lift-card rounded-2xl border border-white/10 bg-base-900/60 p-8">
+        <div class="w-11 h-11 rounded-lg bg-emerald-400/10 flex items-center justify-center mb-6 text-emerald-400">
+          <i data-lucide="network" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-display text-lg font-semibold text-white mb-3">Enterprise Integration</h4>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Client-facing, forward-deployed solutions engineered to scale across hybrid cloud networks and complex compliance requirements.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience" class="relative py-28 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-4xl mx-auto">
+    <div class="reveal mb-16">
+      <p class="section-label text-emerald-400 text-xs uppercase mb-3">02 · Track Record</p>
+      <h3 class="font-display text-3xl md:text-4xl font-semibold text-white">Work Experience</h3>
+    </div>
+
+    <div class="relative pl-10">
+      <div class="absolute left-[7px] top-2 bottom-2 w-px timeline-line"></div>
+
+      <!-- Role 1 -->
+      <div class="reveal relative mb-16">
+        <span class="absolute -left-10 top-1.5 w-4 h-4 rounded-full bg-emerald-400 ring-pulse border-2 border-base-950"></span>
+        <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+          <h4 class="font-display text-xl font-semibold text-white">Senior Software &amp; Infrastructure Engineer</h4>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-400/10 text-emerald-400 uppercase tracking-widest">Present</span>
+        </div>
+        <p class="text-sm text-slate-500 mb-5">Cigna Healthcare · Bloomfield, CT (Remote) · Aug 2024 – Present</p>
+        <ul class="space-y-3 text-sm text-slate-400 leading-relaxed">
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-emerald-400"></i>Architecting high-throughput asynchronous backend engines using Python (FastAPI / Asyncio), managing and deploying 15+ containerized microservices across hybrid cloud networks.</li>
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-emerald-400"></i>Designing and optimizing data pipelines utilizing Pandas and Polars for chunked stream ingestion, supporting RESTful APIs handling 10,000+ daily transactions with zero critical production incidents over 18 months.</li>
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-emerald-400"></i>Engineering automated CI/CD test harness matrices via GitHub Actions, championing coding-agent adoption (Claude Code, Cursor) to cut iteration cycles by 35%.</li>
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-emerald-400"></i>Isolated and resolved complex query performance and logging bottlenecks, reducing MTTR by 35% while mentoring 4+ junior developers.</li>
+        </ul>
+      </div>
+
+      <!-- Role 2 -->
+      <div class="reveal relative">
+        <span class="absolute -left-10 top-1.5 w-4 h-4 rounded-full bg-slate-600 border-2 border-base-950"></span>
+        <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+          <h4 class="font-display text-xl font-semibold text-white">Software Engineer</h4>
+        </div>
+        <p class="text-sm text-slate-500 mb-5">Cento Tech Pvt Ltd · Hyderabad, India · Apr 2019 – Mar 2023</p>
+        <ul class="space-y-3 text-sm text-slate-400 leading-relaxed">
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-slate-600"></i>Designed and maintained core API endpoints and data-processing pipelines in Python, TypeScript, and SQL, refactoring relational schemas to process 1M+ daily records.</li>
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-slate-600"></i>Built automation scripts on AWS (EC2, S3), cutting infrastructure overhead by 20% and integration bottlenecks by 30%.</li>
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-slate-600"></i>Implemented automated regression and integration testing frameworks, reducing post-release defects by 25% for 50,000+ active profiles.</li>
+          <li class="flex gap-3"><i data-lucide="chevron-right" class="w-4 h-4 shrink-0 mt-0.5 text-slate-600"></i>Built responsive React/TypeScript UI components atop Python backend services, improving average API response times by 15% across 5+ production services.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS (3D EXPLODED VIEW) ================= -->
+<section id="skills" class="relative py-28 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="section-label text-emerald-400 text-xs uppercase mb-3">03 · Stack Breakdown</p>
+        <h3 class="font-display text-3xl md:text-4xl font-semibold text-white">Technical Arsenal</h3>
+        <p class="text-slate-500 mt-3 max-w-lg text-sm">An exploded view of the stack. Drag to orbit, pull the slider to pull the domains apart.</p>
+      </div>
+      <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+        <i data-lucide="move-3d" class="w-4 h-4 text-emerald-400"></i>
+        Drag to orbit
+      </div>
+    </div>
+
+    <div class="reveal rounded-2xl border border-white/10 bg-base-900/40 p-4 md:p-8">
+      <!-- Controls -->
+      <div class="flex flex-wrap items-center gap-4 md:gap-6 mb-6 px-1 md:px-2">
+        <div class="flex items-center gap-3 flex-1 min-w-[220px]">
+          <span class="text-[10px] uppercase tracking-widest text-slate-500 shrink-0">Assembled</span>
+          <input id="explodeRange" type="range" min="0" max="100" value="100" class="explode-range w-full" aria-label="Explode amount" />
+          <span class="text-[10px] uppercase tracking-widest text-slate-500 shrink-0">Exploded</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="autoRotateBtn" type="button" class="text-xs px-3 py-1.5 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400 transition-colors duration-300 flex items-center gap-1.5">
+            <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+            Auto-rotate
+          </button>
+          <button id="resetViewBtn" type="button" class="text-xs px-3 py-1.5 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400 transition-colors duration-300 flex items-center gap-1.5">
+            <i data-lucide="refresh-ccw" class="w-3.5 h-3.5"></i>
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- 3D Viewport -->
+      <div id="skillsViewport" class="skills-viewport skills-grab relative w-full h-[580px] sm:h-[720px] lg:h-[820px] select-none">
+        <!-- #skillsLines: SVG overlay holding one connecting line per card,
+             from AU . CORE's center to each card's center. Sits behind
+             everything (z-index:0) and never intercepts the mouse. -->
+        <svg id="skillsLines" class="skills-lines" aria-hidden="true"></svg>
+        <!-- #skillsCore is created inside here by JS, as a true sibling of
+             each .skill-node, so cards can dynamically stack in front of or
+             behind it as they orbit. See initSkillsDiagram(). -->
+        <div id="skillsScene" class="skills-scene absolute inset-0"></div>
+      </div>
+      <p class="text-center text-[11px] text-slate-600 mt-4">7 domains · 56 tools &amp; disciplines</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects" class="relative py-28 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-16">
+      <p class="section-label text-emerald-400 text-xs uppercase mb-3">04 · Selected Work</p>
+      <h3 class="font-display text-3xl md:text-4xl font-semibold text-white">Interactive Projects</h3>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Project 1 -->
+      <div class="slide-in-left lift-card rounded-2xl border border-white/10 bg-base-900/60 p-8 flex flex-col">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-11 h-11 rounded-lg bg-emerald-400/10 flex items-center justify-center text-emerald-400">
+            <i data-lucide="git-branch" class="w-5 h-5"></i>
+          </div>
+          <a href="https://github.com/SaiAnirudVarma/algorithmic-task-optimization" target="_blank" rel="noopener" aria-label="View on GitHub" class="icon-btn w-9 h-9 flex items-center justify-center rounded-lg border border-white/10 text-slate-400">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .321.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
+        </div>
+        <h4 class="font-display text-lg font-semibold text-white mb-2">Algorithmic Task Optimization Engine</h4>
+        <p class="text-xs text-slate-600 mb-4 uppercase tracking-widest">August 2025</p>
+        <p class="text-sm text-slate-400 leading-relaxed mb-6 flex-1">
+          Multi-agent system state validation and task-scheduling matrices over a Python data-parsing backend, with custom database index structures increasing transactional throughput 3x. A rules-based validation UI audits pipeline states across 500+ daily runs, cutting manual debugging overhead by 70%.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Python</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">FastAPI</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Asyncio</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Polars</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Pytest</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">GitHub Actions</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="slide-in-right lift-card rounded-2xl border border-white/10 bg-base-900/60 p-8 flex flex-col">
+        <div class="flex items-start justify-between mb-5">
+          <div class="w-11 h-11 rounded-lg bg-emerald-400/10 flex items-center justify-center text-emerald-400">
+            <i data-lucide="waypoints" class="w-5 h-5"></i>
+          </div>
+          <a href="https://github.com/SaiAnirudVarma/agentic-rag-orchestrator" target="_blank" rel="noopener" aria-label="View on GitHub" class="icon-btn w-9 h-9 flex items-center justify-center rounded-lg border border-white/10 text-slate-400">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .321.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
+        </div>
+        <h4 class="font-display text-lg font-semibold text-white mb-2">Agentic RAG Orchestrator</h4>
+        <p class="text-xs text-slate-600 mb-4 uppercase tracking-widest">January 2026</p>
+        <p class="text-sm text-slate-400 leading-relaxed mb-6 flex-1">
+          Real-time conversational search and routing engine built on custom Model Context Protocol (MCP) servers with Redis caching, cutting context-retrieval latency by 60%. Runtimes isolated via Docker and Kubernetes, with sandboxed integration tests validating end-to-end enterprise data workflows and cutting pre-release iteration time by 35%.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Full-Stack</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Redis</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Docker</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Data Pipelines</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">Automated Testing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section id="education" class="relative py-28 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-4xl mx-auto">
+    <div class="reveal mb-16">
+      <p class="section-label text-emerald-400 text-xs uppercase mb-3">05 · Foundation</p>
+      <h3 class="font-display text-3xl md:text-4xl font-semibold text-white">Education</h3>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="reveal rounded-2xl border border-white/10 bg-base-900/60 p-8">
+        <i data-lucide="graduation-cap" class="w-6 h-6 text-emerald-400 mb-5"></i>
+        <h4 class="font-display text-white font-semibold mb-1">M.S. Computer &amp; Information Science</h4>
+        <p class="text-sm text-slate-500 mb-4">Lindsey Wilson College · Aug 2024 · GPA 3.97</p>
+        <p class="text-xs text-slate-500 leading-relaxed">Coursework emphasis: advanced algorithms, distributed databases, and systems engineering fundamentals underpinning production-grade architecture.</p>
+      </div>
+      <div class="reveal reveal-delay-1 rounded-2xl border border-white/10 bg-base-900/60 p-8">
+        <i data-lucide="graduation-cap" class="w-6 h-6 text-emerald-400 mb-5"></i>
+        <h4 class="font-display text-white font-semibold mb-1">B.Tech Computer &amp; Information Science</h4>
+        <p class="text-sm text-slate-500 mb-4">KL University · Mar 2019 · GPA 3.40</p>
+        <p class="text-xs text-slate-500 leading-relaxed">Foundational coursework in data structures, relational database design, and network systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SYSTEM HEALTH ================= -->
+<section id="status" class="relative py-28 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="reveal mb-12 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="section-label text-emerald-400 text-xs uppercase mb-3">06 · Live Metrics</p>
+        <h3 class="font-display text-3xl md:text-4xl font-semibold text-white">System Health</h3>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 status-dot"></span>
+        All systems nominal
+      </div>
+    </div>
+
+    <div class="reveal rounded-2xl border border-white/10 bg-base-900/60 p-8">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6 text-xs text-slate-500">
+        <span>Contribution activity — rolling 52 weeks</span>
+        <div class="flex items-center gap-1.5">
+          <span>Less</span>
+          <span class="w-3 h-3 rounded-sm bg-base-800"></span>
+          <span class="w-3 h-3 rounded-sm bg-emerald-900"></span>
+          <span class="w-3 h-3 rounded-sm bg-emerald-700"></span>
+          <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+          <span class="w-3 h-3 rounded-sm bg-emerald-400"></span>
+          <span>More</span>
+        </div>
+      </div>
+      <div id="healthGrid" class="grid grid-flow-col gap-1" style="grid-template-rows: repeat(7, minmax(0,1fr));"></div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 pt-8 border-t border-white/5">
+        <div>
+          <p class="font-display text-2xl text-white mono-num" id="statUptime">0%</p>
+          <p class="text-xs text-slate-500 mt-1">Uptime, 18mo</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl text-white mono-num" id="statTx">0</p>
+          <p class="text-xs text-slate-500 mt-1">Daily transactions</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl text-white mono-num" id="statServices">0</p>
+          <p class="text-xs text-slate-500 mt-1">Microservices deployed</p>
+        </div>
+        <div>
+          <p class="font-display text-2xl text-white mono-num" id="statMttr">0%</p>
+          <p class="text-xs text-slate-500 mt-1">MTTR reduction</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="relative py-14 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+    <p>&copy; 2026 Anirud Uppalapati. Built with Tailwind &amp; a lot of coffee.</p>
+    <div class="flex items-center gap-6">
+      <a href="mailto:saianirudvarmau@gmail.com" class="hover:text-emerald-400 transition-colors duration-300">saianirudvarmau@gmail.com</a>
+      <a href="https://www.linkedin.com/in/saianirudvarma" target="_blank" rel="noopener" class="hover:text-emerald-400 transition-colors duration-300">LinkedIn</a>
+      <a href="https://github.com/SaiAnirudVarma" target="_blank" rel="noopener" class="hover:text-emerald-400 transition-colors duration-300">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  // ===== Skills: 3D Exploded View =====
+  (function initSkillsDiagram() {
+    const categories = [
+      { title: 'Programming Languages & Core CS', icon: 'code-2', skills: ['Golang (Go)','Python','C#','Java','TypeScript','JavaScript (ES6+)','Object-Oriented Programming (OOP)','Data Structures & Algorithms','Domain-Driven Design (DDD)'] },
+      { title: 'AI Platforms, LLMs & GenAI', icon: 'brain-circuit', skills: ['Large Language Models (LLMs)','LLM API Integration','Retrieval-Augmented Generation (RAG)','AI Agents & Agentic Orchestration','Vertex AI (GCP)','Tool-Calling & Planning Logic','Semantic Retrieval & Search','Vector Databases (Pinecone, PGVector)','LLMOps & AI Governance/Safety','AI Dev Automation (Copilot, Cursor AI, Claude Code)'] },
+      { title: 'Backend Microservices & API Architecture', icon: 'network', skills: ['Backend Microservices Design','RESTful API Development','gRPC Architecture','Distributed Systems','Asynchronous Job Orchestration','Event-Driven Architecture','Message Queues (Kafka, RabbitMQ)','System Integration & Scalable Design'] },
+      { title: 'Cloud Infrastructure & DevOps', icon: 'cloud-cog', skills: ['AWS (ECS, S3, Lambda)','Google Cloud Platform (GCP)','Microsoft Azure (AKS, Functions, Blob Storage)','Kubernetes (k8s)','Docker Containerization','Serverless Technologies','GitHub Actions CI/CD','Git Version Control'] },
+      { title: 'Frontend & UI/UX Engineering', icon: 'layout-panel-left', skills: ['React','Angular','Vue','Svelte','Component-Driven Frontend Engineering','Modern UX Component Patterns','Responsive Design & Dynamic Dashboards'] },
+      { title: 'Data Modeling, Databases & Analytics', icon: 'database', skills: ['PostgreSQL','MySQL','SQL Schema Design & Optimization','Transactional & Analytical Data Workloads','Redis Caching','Cloud Data Warehouses (Snowflake, BigQuery)','Data Integration & Ingestion Pipelines'] },
+      { title: 'Testing, Observability & Ops Excellence', icon: 'shield-check', skills: ['Automated Unit Testing (PyTest, xUnit, NUnit, Jest, Go)','Integration & E2E Testing (Cypress)','Static Analysis & Code Quality','OpenTelemetry & Distributed Tracing','Root Cause Analysis & Bug Triaging','API Security (OAuth2, SSO)','On-Call Rotation & System Monitoring'] },
+    ];
+
+    const scene = document.getElementById('skillsScene');
+    const viewport = document.getElementById('skillsViewport');
+    const linesSvg = document.getElementById('skillsLines');
+    if (!scene || !viewport) return;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+
+    // Dynamic card footprint: wider cards for categories with longer skill
+    // strings. Height is fixed (cards scroll internally for overflow chips).
+    const narrowViewport = viewport.clientWidth > 0 && viewport.clientWidth < 480;
+    function sizeForCategory(cat) {
+      const longest = cat.skills.reduce((m, s) => Math.max(m, s.length), 0);
+      let width = longest > 34 ? 232 : longest > 24 ? 216 : 192;
+      if (narrowViewport) width = Math.min(width, 188);
+      const height = 180;
+      return { width, height };
+    }
+
+    // Fibonacci sphere distribution — the organic, non-uniform spread that
+    // gives every card its own "exploded part" direction and depth, rather
+    // than sitting on one flat ring.
+    function fibonacciPoint(i, n) {
+      const offset = 2 / n;
+      const increment = Math.PI * (3 - Math.sqrt(5));
+      const y = (i * offset) - 1 + (offset / 2);
+      const r = Math.sqrt(Math.max(0, 1 - y * y));
+      const phi = i * increment;
+      return { x: Math.cos(phi) * r, y: y, z: Math.sin(phi) * r };
+    }
+
+    // Core: a fixed, always-centered anchor — positioned once via CSS
+    // (top:50%; left:50%; translate(-50%,-50%)) and never touched by JS, so
+    // it can never drift, tilt, or move no matter how the cards orbit.
+    const coreEl = document.createElement('div');
+    coreEl.id = 'skillsCore';
+    coreEl.className = 'skill-node';
+    coreEl.innerHTML = `
+      <div class="flex flex-col items-center gap-3">
+        <div class="core-orb"></div>
+        <span class="text-[10px] tracking-[0.3em] uppercase text-emerald-400 whitespace-nowrap">AU &middot; CORE</span>
+      </div>`;
+    scene.appendChild(coreEl);
+
+    const bodies = [];
+    categories.forEach((cat, i) => {
+      const dir = fibonacciPoint(i, categories.length);
+      const size = sizeForCategory(cat);
+      const node = document.createElement('div');
+      node.className = 'skill-node';
+      const chips = cat.skills.map(s => `<span class="tag-chip text-[10px] px-2 py-1 rounded-full border border-white/10 text-slate-400">${s}</span>`).join('');
+      node.innerHTML = `
+        <div class="skill-card lift-card rounded-xl border border-white/10 bg-base-900/95 backdrop-blur-sm p-4 shadow-xl" style="width:${size.width}px;">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center text-emerald-400 shrink-0">
+              <i data-lucide="${cat.icon}" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-display text-[11px] font-semibold text-white leading-tight">${cat.title}</h4>
+          </div>
+          <div class="flex flex-wrap gap-1.5">${chips}</div>
+        </div>`;
+      scene.appendChild(node);
+
+      // Connecting line from the core's center to this card's center — base
+      // style is the thin dashed emerald line; .active (applied on hover,
+      // see the mouseover/mouseout handlers below) swaps in the bright
+      // solid glow style.
+      let line = null;
+      if (linesSvg) {
+        line = document.createElementNS(SVG_NS, 'line');
+        line.setAttribute('class', 'skill-line');
+        linesSvg.appendChild(line);
+      }
+
+      bodies.push({ el: node, dir, size, pos: { x: 0, y: 0, z: 0 }, line });
+    });
+
+    lucide.createIcons();
+
+    // Hard minimum orbit radius: no card is ever allowed closer to the
+    // center than this, at any explode level, including 0% / "assembled".
+    const MIN_ORBIT_RADIUS = 220;
+    let maxDist = 240;
+    function computeMaxDist() {
+      // A generous, roughly-safe starting ceiling for the organic spread.
+      // This is only a first pass — the REAL, exact guarantee against edge
+      // overflow is the hard per-frame clamp in paint() below, which
+      // operates on each card's actual final on-screen position (after
+      // rotation is applied), not this pre-rotation local radius.
+      const w = scene.clientWidth || viewport.clientWidth;
+      const h = scene.clientHeight || viewport.clientHeight;
+      const rawMax = Math.min(w, h) / 2 - 40;
+      maxDist = Math.max(60, Math.min(320, rawMax));
+    }
+    computeMaxDist();
+
+    // Matches .skills-viewport's CSS `perspective: 1600px` exactly — needed
+    // here so the JS can predict, pixel-for-pixel, where the browser will
+    // actually RENDER each card after its own perspective projection (see
+    // projectedPoint() below), rather than only knowing the pre-projection
+    // local translate3d() input.
+    const PERSPECTIVE = 1600;
+
+    function updateLinesSvgSize() {
+      if (!linesSvg) return;
+      const w = viewport.clientWidth;
+      const h = viewport.clientHeight;
+      linesSvg.setAttribute('width', w);
+      linesSvg.setAttribute('height', h);
+      linesSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    }
+    updateLinesSvgSize();
+
+    function computeOrbitPosition(dir, explodeFactor) {
+      const effectiveMinRadius = Math.min(MIN_ORBIT_RADIUS, maxDist);
+      const target = Math.max(effectiveMinRadius, maxDist * explodeFactor);
+      return { x: dir.x * target, y: dir.y * target, z: dir.z * target };
+    }
+    function applyPositions(explodeFactor) {
+      bodies.forEach(n => { n.pos = computeOrbitPosition(n.dir, explodeFactor); });
+    }
+
+    let yaw = -18, pitch = -10;
+    let explode = 1.0; // starts fully "Exploded" — matches the slider's default value="100"
+    let autoRotate = true; // spinning immediately on load
+    let dragging = false;
+    let lastX = 0, lastY = 0;
+    // True only while the cursor is directly over a .skill-card — empty
+    // canvas space does NOT pause rotation, only landing on an actual card does.
+    let pauseRotation = false;
+    // The currently-hovered card's .skill-node element (or null) — forced to
+    // the very top of the depth stack (z-index 999) regardless of depth.
+    let hoveredEl = null;
+
+    // Applies the current yaw/pitch rotation to a LOCAL point and returns
+    // its full rotated (x, y, z) — computed here in JS rather than as a CSS
+    // transform on the parent scene, specifically so paint() can hard-clamp
+    // each card's REAL final on-screen x/y every frame. Clamping the
+    // pre-rotation local x/y wouldn't work: under true 3D rotation, a
+    // point's on-screen x depends on both its local x AND z (rotateY mixes
+    // them), so only the fully-rotated position can be safely bounded.
+    function rotatedPosition(pos, yawDeg, pitchDeg) {
+      const yawRad = (yawDeg * Math.PI) / 180;
+      const pitchRad = (pitchDeg * Math.PI) / 180;
+      // rotateY(yaw) first (innermost)
+      const x1 = pos.x * Math.cos(yawRad) + pos.z * Math.sin(yawRad);
+      const z1 = -pos.x * Math.sin(yawRad) + pos.z * Math.cos(yawRad);
+      const y1 = pos.y;
+      // then rotateX(pitch)
+      const y2 = y1 * Math.cos(pitchRad) - z1 * Math.sin(pitchRad);
+      const z2 = y1 * Math.sin(pitchRad) + z1 * Math.cos(pitchRad);
+      return { x: x1, y: y2, z: z2 };
+    }
+
+    // CSS perspective magnifies (or shrinks) a translate3d(x,y,z)'s apparent
+    // x/y by a factor of PERSPECTIVE/(PERSPECTIVE-z) — that's how a card
+    // with z>0 (nearer the viewer) ends up visually LARGER and further out
+    // than its raw x/y would suggest. z is safety-capped well below
+    // PERSPECTIVE so this can never divide-by-near-zero and blow up.
+    function perspectiveFactor(z) {
+      const safeZ = Math.min(z, PERSPECTIVE * 0.8);
+      return PERSPECTIVE / (PERSPECTIVE - safeZ);
+    }
+
+    // ---- Hard viewport edge clamp on the FINAL, POST-PERSPECTIVE position ----
+    // .skill-node is anchored at the canvas's own center (top:50%; left:50%),
+    // so 0 here IS the center. The clamp bounds are the half-canvas
+    // dimensions minus this card's own half-footprint and a 20px edge
+    // buffer — the same rule as
+    //   maxAllowedX = canvasWidth - cardWidth - 20; cardX = min(cardX, maxAllowedX)
+    // adapted from a top-left origin to this center origin (and mirrored for
+    // the left/top/bottom edges too). Because CSS applies perspective
+    // AFTER this local x/y is set via translate3d, the bound is divided by
+    // the same perspective factor k here — that pre-compensates so the
+    // card's TRUE on-screen position (after the browser's own projection)
+    // never crosses the edge, even for cards magnified by being near the
+    // front (z>0). Runs every single frame, so no card can EVER end up
+    // beyond the canvas edge, at any rotation, any explode level, any
+    // viewport size, any depth.
+    const EDGE_BUFFER = 20;
+    function clampToCanvas(x, y, size, k) {
+      const w = scene.clientWidth || viewport.clientWidth;
+      const h = scene.clientHeight || viewport.clientHeight;
+      const maxX = Math.max(0, ((w / 2) - (size.width / 2) - EDGE_BUFFER) / k);
+      const maxY = Math.max(0, ((h / 2) - (size.height / 2) - EDGE_BUFFER) / k);
+      return { x: Math.max(-maxX, Math.min(maxX, x)), y: Math.max(-maxY, Math.min(maxY, y)) };
+    }
+
+    function paint() {
+      const w = scene.clientWidth || viewport.clientWidth;
+      const h = scene.clientHeight || viewport.clientHeight;
+      const coreScreenX = w / 2, coreScreenY = h / 2; // core is dead-center, always
+      bodies.forEach(n => {
+        const r = rotatedPosition(n.pos, yaw, pitch);
+        const k = perspectiveFactor(r.z);
+        const clamped = clampToCanvas(r.x, r.y, n.size, k);
+        // .toFixed() guarantees standard decimal notation — plain template
+        // interpolation can emit scientific notation for very small floats
+        // (e.g. "1.2e-7px"), which is invalid as a CSS length.
+        n.el.style.transform = `translate3d(${clamped.x.toFixed(2)}px, ${clamped.y.toFixed(2)}px, ${r.z.toFixed(2)}px) translate(-50%,-50%)`;
+        if (n.el === hoveredEl) {
+          n.el.style.zIndex = 999; // hovered card always wins, regardless of depth
+        } else {
+          n.el.style.zIndex = r.z > 0 ? 200 : 50; // core sits fixed at 100
+        }
+
+        // The connecting line's card-end must land exactly where the
+        // browser will actually render the card's center — i.e., the SAME
+        // clamped local x/y further multiplied by k, mirroring exactly what
+        // CSS's own perspective projection does to translate3d(x,y,z).
+        if (n.line) {
+          const projectedX = clamped.x * k;
+          const projectedY = clamped.y * k;
+          n.line.setAttribute('x1', coreScreenX.toFixed(2));
+          n.line.setAttribute('y1', coreScreenY.toFixed(2));
+          n.line.setAttribute('x2', (coreScreenX + projectedX).toFixed(2));
+          n.line.setAttribute('y2', (coreScreenY + projectedY).toFixed(2));
+          n.line.classList.toggle('active', n.el === hoveredEl);
+        }
+      });
+    }
+
+    function render() {
+      applyPositions(explode);
+      paint();
+    }
+    render();
+
+    function onDown(x, y) { dragging = true; lastX = x; lastY = y; }
+    function onMove(x, y) {
+      if (!dragging) return;
+      const dx = x - lastX, dy = y - lastY;
+      yaw += dx * 0.35;
+      pitch = Math.max(-55, Math.min(55, pitch - dy * 0.35));
+      lastX = x; lastY = y;
+      paint(); // position unchanged during drag — only rotation
+    }
+    function onUp() { dragging = false; }
+
+    viewport.addEventListener('mousedown', e => { onDown(e.clientX, e.clientY); autoRotate = false; });
+    window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+    window.addEventListener('mouseup', onUp);
+    viewport.addEventListener('touchstart', e => { const t = e.touches[0]; onDown(t.clientX, t.clientY); autoRotate = false; }, { passive: true });
+    viewport.addEventListener('touchmove', e => { const t = e.touches[0]; onMove(t.clientX, t.clientY); }, { passive: true });
+    viewport.addEventListener('touchend', onUp);
+    window.addEventListener('resize', () => { computeMaxDist(); updateLinesSvgSize(); render(); });
+
+    // ---- Hover: pause rotation ONLY when hovering an actual card, never for
+    // empty canvas space. Card-only hover: border glow + elevation to the
+    // front (z-index 999), no size/position change, so the mouse target
+    // stays rock-solid through the whole hover.
+    scene.addEventListener('mouseover', e => {
+      const card = e.target.closest('.skill-card');
+      if (!card) return;
+      pauseRotation = true;
+      hoveredEl = card.closest('.skill-node');
+      paint();
+    });
+    scene.addEventListener('mouseout', e => {
+      const leavingCard = e.target.closest('.skill-card');
+      const enteringCard = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest('.skill-card') : null;
+      if (leavingCard && leavingCard !== enteringCard) {
+        pauseRotation = false;
+        hoveredEl = null;
+        paint();
+      }
+    });
+
+    // Briefly opts every card into the eased position transition for a
+    // deliberate, discrete jump (explode-slider drag, reset) — removed right
+    // after so continuous auto-rotate/drag frames go back to instant,
+    // transition-free updates (see the .pos-anim CSS comment for why that
+    // matters).
+    function animateThenSnap(fn) {
+      bodies.forEach(n => n.el.classList.add('pos-anim'));
+      fn();
+      window.setTimeout(() => bodies.forEach(n => n.el.classList.remove('pos-anim')), 700);
+    }
+
+    const rangeEl = document.getElementById('explodeRange');
+    rangeEl.addEventListener('input', () => {
+      explode = rangeEl.value / 100;
+      animateThenSnap(render);
+    });
+
+    const autoBtn = document.getElementById('autoRotateBtn');
+    autoBtn.classList.add('text-emerald-400', 'border-emerald-400/50');
+    autoBtn.addEventListener('click', () => {
+      autoRotate = !autoRotate;
+      autoBtn.classList.toggle('text-emerald-400', autoRotate);
+      autoBtn.classList.toggle('border-emerald-400/50', autoRotate);
+    });
+
+    const DEFAULT_EXPLODE = 100;
+    document.getElementById('resetViewBtn').addEventListener('click', () => {
+      yaw = -18; pitch = -10; explode = DEFAULT_EXPLODE / 100;
+      rangeEl.value = DEFAULT_EXPLODE;
+      autoRotate = true;
+      autoBtn.classList.add('text-emerald-400', 'border-emerald-400/50');
+      animateThenSnap(render);
+    });
+
+    // Angular velocity, degrees/frame at 60fps (~0.2 => ~12deg/sec).
+    const AUTO_ROTATE_SPEED = 0.2;
+    function tick() {
+      if (autoRotate && !dragging && !pauseRotation) {
+        yaw += AUTO_ROTATE_SPEED;
+        paint(); // rotation only — positions already resolved, no recompute needed
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal, .slide-in-left, .slide-in-right');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // System health grid (github-style contribution graph)
+  const grid = document.getElementById('healthGrid');
+  const weeks = 52, days = 7;
+  const shades = ['bg-base-800', 'bg-emerald-900', 'bg-emerald-700', 'bg-emerald-500', 'bg-emerald-400'];
+  for (let w = 0; w < weeks; w++) {
+    for (let d = 0; d < days; d++) {
+      const cell = document.createElement('div');
+      const r = Math.random();
+      let shade = shades[0];
+      if (r > 0.93) shade = shades[4];
+      else if (r > 0.82) shade = shades[3];
+      else if (r > 0.65) shade = shades[2];
+      else if (r > 0.45) shade = shades[1];
+      cell.className = `health-cell ${shade}`;
+      if (shade !== shades[0] && Math.random() > 0.7) {
+        cell.style.animation = `cellGlow ${3 + Math.random() * 3}s ease-in-out infinite`;
+        cell.style.animationDelay = `${Math.random() * 3}s`;
+      }
+      grid.appendChild(cell);
+    }
+  }
+
+  // Animated stat counters
+  function animateCount(id, target, suffix = '', duration = 1400) {
+    const el = document.getElementById(id);
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const val = Math.round(target * eased);
+      el.textContent = val.toLocaleString() + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statsSection = document.getElementById('status');
+  let statsAnimated = false;
+  const statsIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !statsAnimated) {
+        statsAnimated = true;
+        animateCount('statUptime', 100, '%');
+        animateCount('statTx', 10000, '+');
+        animateCount('statServices', 15, '+');
+        animateCount('statMttr', 35, '%');
+      }
+    });
+  }, { threshold: 0.3 });
+  statsIO.observe(statsSection);
+</script>
+
+</body>
+</html>

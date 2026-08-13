@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Issue #01: Stop Building Naive RAG — The Full-Stack AI Playbook</title>
+<meta name="description" content="The 3 production-grade architectural patterns that separate fragile prototypes from enterprise AI systems." />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          base: {
+            950: '#07080a',
+            900: '#0b0d10',
+            850: '#0f1216',
+            800: '#141821',
+            700: '#1c212b',
+            600: '#2a303c',
+          },
+          accent: {
+            DEFAULT: '#34d399',
+            dim: '#10b981',
+            soft: 'rgba(52,211,153,0.12)',
+          }
+        },
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+          display: ['"Space Grotesk"', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  :root {
+    --accent: #34d399;
+    --accent-dim: #10b981;
+  }
+
+  * { scroll-behavior: smooth; }
+
+  body {
+    background: #07080a;
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(52,211,153,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(96,165,250,0.05) 0%, transparent 35%);
+  }
+
+  ::selection { background: rgba(52,211,153,0.25); color: #fff; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0b0d10; }
+  ::-webkit-scrollbar-thumb { background: #2a303c; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #34d399; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0%; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  @keyframes statusBlink {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.6); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(52,211,153,0); }
+  }
+  .status-dot { animation: statusBlink 2s ease-in-out infinite; }
+
+  .mono-num { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+
+<body class="bg-base-950 text-slate-300 font-mono antialiased selection:bg-emerald-500/20">
+
+<!-- ================= NAV ================= -->
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-base-950/70 border-b border-white/5">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+    <a href="index.html#top" class="font-display text-sm font-semibold tracking-tight text-white flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 status-dot"></span>
+      AU<span class="text-emerald-400">.</span>dev
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-xs uppercase tracking-widest text-slate-400">
+      <a href="index.html#philosophy" class="nav-link hover:text-white">Philosophy</a>
+      <a href="index.html#experience" class="nav-link hover:text-white">Experience</a>
+      <a href="index.html#skills" class="nav-link hover:text-white">Skills</a>
+      <a href="index.html#projects" class="nav-link hover:text-white">Projects</a>
+      <a href="index.html#education" class="nav-link hover:text-white">Education</a>
+      <a href="index.html#status" class="nav-link hover:text-white">Status</a>
+      <a href="newsletters.html" class="nav-link text-white">Writing</a>
+    </div>
+    <a href="mailto:saianirudvarmau@gmail.com" class="text-xs px-4 py-2 rounded-full border border-white/10 text-slate-300 hover:border-emerald-400/50 hover:text-emerald-400 transition-colors duration-300">
+      Contact
+    </a>
+  </div>
+</nav>
+
+<!-- ================= ISSUE VIEWER ================= -->
+<header class="relative pt-40 pb-10 px-6 md:px-10">
+  <div class="max-w-6xl mx-auto">
+    <a href="newsletters.html" class="reveal inline-flex items-center gap-2 text-xs uppercase tracking-widest text-slate-400 hover:text-emerald-400 transition-colors duration-300 mb-8">
+      ← Back to all newsletters
+    </a>
+
+    <div class="reveal flex flex-wrap items-start justify-between gap-6 mb-6">
+      <h1 class="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight max-w-2xl">
+        Issue #01: Stop Building Naive RAG
+      </h1>
+      <a href="Full-Stack-AI-Playbook-Issue-01.pdf" download class="group inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-emerald-400 text-base-950 text-sm font-semibold hover:bg-emerald-300 transition-colors duration-300 shrink-0">
+        Download PDF 📥
+      </a>
+    </div>
+
+    <div class="reveal flex flex-wrap items-center gap-6 text-sm text-slate-400">
+      <span class="flex items-center gap-1.5">👁️ <span id="view-count" class="mono-num">--</span> Views</span>
+      <button id="like-btn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400 transition-colors duration-300">
+        ❤️ Like (<span id="like-count" class="mono-num">0</span>)
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= PDF EMBED ================= -->
+<section class="relative pb-24 px-6 md:px-10">
+  <div class="max-w-6xl mx-auto reveal">
+    <iframe
+      src="Full-Stack-AI-Playbook-Issue-01.pdf"
+      title="Issue #01: Stop Building Naive RAG — PDF"
+      style="width: 100%; height: 85vh; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+      <p class="p-6 text-sm text-slate-400">
+        Your browser doesn't support inline PDF previews.
+        <a href="Full-Stack-AI-Playbook-Issue-01.pdf" class="text-emerald-400 hover:underline">Download the PDF instead</a>.
+      </p>
+    </iframe>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="relative py-14 px-6 md:px-10 border-t border-white/5">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+    <p>&copy; 2026 Anirud Uppalapati. Built with Tailwind &amp; a lot of coffee.</p>
+    <div class="flex items-center gap-6">
+      <a href="mailto:saianirudvarmau@gmail.com" class="hover:text-emerald-400 transition-colors duration-300">saianirudvarmau@gmail.com</a>
+      <a href="https://www.linkedin.com/in/saianirudvarma" target="_blank" rel="noopener" class="hover:text-emerald-400 transition-colors duration-300">LinkedIn</a>
+      <a href="https://github.com/SaiAnirudVarma" target="_blank" rel="noopener" class="hover:text-emerald-400 transition-colors duration-300">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ===== View & Like counters (CounterAPI, with localStorage fallback) =====
+  // To add issue-02.html: duplicate this block and swap every "issue-01"
+  // counter key for "issue-02".
+  (function initCounters() {
+    const ISSUE_KEY = 'issue-01';
+    const VIEW_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}/up`;
+    const LIKES_READ_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}-likes`;
+    const LIKES_UP_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}-likes/up`;
+
+    const viewEl = document.getElementById('view-count');
+    const likeBtn = document.getElementById('like-btn');
+    const likeCountEl = document.getElementById('like-count');
+
+    const LOCAL_VIEWS_KEY = `${ISSUE_KEY}-views-fallback`;
+    const LOCAL_LIKES_KEY = `${ISSUE_KEY}-likes-fallback`;
+    const LIKED_FLAG_KEY = `${ISSUE_KEY}-liked`;
+
+    function extractCount(data) {
+      if (!data) return null;
+      if (typeof data.count === 'number') return data.count;
+      if (data.data && typeof data.data.up_count === 'number') return data.data.up_count;
+      if (data.data && typeof data.data.count === 'number') return data.data.count;
+      return null;
+    }
+
+    // Views: increments on every page load, falls back to a local counter
+    // if the API is unreachable or blocked.
+    fetch(VIEW_URL)
+      .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+      .then(data => {
+        const count = extractCount(data);
+        if (count === null) throw new Error('unexpected response shape');
+        viewEl.textContent = count.toLocaleString();
+      })
+      .catch(() => {
+        const fallback = parseInt(localStorage.getItem(LOCAL_VIEWS_KEY) || '0', 10) + 1;
+        localStorage.setItem(LOCAL_VIEWS_KEY, String(fallback));
+        viewEl.textContent = fallback.toLocaleString();
+      });
+
+    // Likes: read the current count without incrementing, then wire up the button.
+    const alreadyLiked = localStorage.getItem(LIKED_FLAG_KEY) === 'true';
+    let currentLikes = parseInt(localStorage.getItem(LOCAL_LIKES_KEY) || '0', 10);
+
+    function setLikedState() {
+      likeBtn.classList.add('text-emerald-400', 'border-emerald-400/50');
+      likeBtn.disabled = true;
+      likeBtn.style.cursor = 'default';
+    }
+
+    fetch(LIKES_READ_URL)
+      .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+      .then(data => {
+        const count = extractCount(data);
+        if (count !== null) currentLikes = count;
+        likeCountEl.textContent = currentLikes.toLocaleString();
+      })
+      .catch(() => {
+        likeCountEl.textContent = currentLikes.toLocaleString();
+      });
+
+    if (alreadyLiked) setLikedState();
+
+    likeBtn.addEventListener('click', () => {
+      if (localStorage.getItem(LIKED_FLAG_KEY) === 'true') return;
+      setLikedState();
+
+      fetch(LIKES_UP_URL)
+        .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+        .then(data => {
+          const count = extractCount(data);
+          const newCount = count !== null ? count : currentLikes + 1;
+          localStorage.setItem(LIKED_FLAG_KEY, 'true');
+          localStorage.setItem(LOCAL_LIKES_KEY, String(newCount));
+          likeCountEl.textContent = newCount.toLocaleString();
+        })
+        .catch(() => {
+          const newCount = currentLikes + 1;
+          localStorage.setItem(LIKED_FLAG_KEY, 'true');
+          localStorage.setItem(LOCAL_LIKES_KEY, String(newCount));
+          likeCountEl.textContent = newCount.toLocaleString();
+        });
+    });
+  })();
+</script>
+
+</body>
+</html>
