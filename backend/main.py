@@ -82,7 +82,11 @@ def _get_or_create_stats():
 @app.get("/api/stats")
 def get_stats():
     stats = _get_or_create_stats()
-    return {"likes": stats["likes"], "views": stats["views"]}
+    return {
+        "likes": stats["likes"],
+        "views": stats["views"],
+        "subscribers": subscribers_collection.count_documents({}),
+    }
 
 
 @app.post("/api/like")

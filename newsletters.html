@@ -178,8 +178,12 @@
         <h3 class="font-display text-2xl md:text-3xl font-semibold text-white mb-2">
           Stay in the <span class="text-emerald-400">loop</span>
         </h3>
-        <p class="text-sm text-slate-400 leading-relaxed">
+        <p class="text-sm text-slate-400 leading-relaxed mb-3">
           Get bi-weekly production AI architecture deep dives delivered straight to your inbox.
+        </p>
+        <p class="flex items-center gap-2 text-xs text-slate-500">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 status-dot"></span>
+          <span id="subscriberCount" class="text-emerald-400 font-semibold">--</span> subscribers already in the loop
         </p>
       </div>
 
@@ -343,6 +347,11 @@
         await subscribeWithRetry(email);
         form.classList.add('hidden');
         successEl.classList.remove('hidden');
+        const subscriberCountEl = document.getElementById('subscriberCount');
+        const current = parseInt((subscriberCountEl?.textContent || '').replace(/,/g, ''), 10);
+        if (subscriberCountEl && !isNaN(current)) {
+          subscriberCountEl.textContent = (current + 1).toLocaleString();
+        }
       } catch (err) {
         errorEl.textContent = err.message === 'Already subscribed!'
           ? "You're already on the list!"
@@ -362,17 +371,21 @@
     const API_BASE = 'https://portfolio-backend-ychi.onrender.com';
     const viewsEl = document.getElementById('views-01');
     const likesEl = document.getElementById('likes-01');
-    if (!viewsEl || !likesEl) return;
+    const subscriberCountEl = document.getElementById('subscriberCount');
 
     fetch(`${API_BASE}/api/stats`)
       .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
       .then(data => {
-        viewsEl.textContent = data.views.toLocaleString();
-        likesEl.textContent = data.likes.toLocaleString();
+        if (viewsEl) viewsEl.textContent = typeof data.views === 'number' ? data.views.toLocaleString() : '—';
+        if (likesEl) likesEl.textContent = typeof data.likes === 'number' ? data.likes.toLocaleString() : '—';
+        if (subscriberCountEl) {
+          subscriberCountEl.textContent = typeof data.subscribers === 'number' ? data.subscribers.toLocaleString() : '—';
+        }
       })
       .catch(() => {
-        viewsEl.textContent = '—';
-        likesEl.textContent = '—';
+        if (viewsEl) viewsEl.textContent = '—';
+        if (likesEl) likesEl.textContent = '—';
+        if (subscriberCountEl) subscriberCountEl.textContent = '—';
       });
   })();
 </script>
