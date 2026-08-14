@@ -183,49 +183,14 @@
   }, { threshold: 0.1 });
   revealEls.forEach(el => io.observe(el));
 
-  // ===== View & Like counters (CounterAPI, with localStorage fallback) =====
-  // To add issue-02.html: duplicate this block and swap every "issue-01"
-  // counter key for "issue-02".
+  // ===== View & Like counters (FastAPI + MongoDB backend) =====
   (function initCounters() {
-    const ISSUE_KEY = 'issue-01';
-    const VIEW_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}/up`;
-    const LIKES_READ_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}-likes`;
-    const LIKES_UP_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}-likes/up`;
+    const API_BASE = 'https://portfolio-backend-ychi.onrender.com';
+    const LIKED_FLAG_KEY = 'issue-01-liked';
 
     const viewEl = document.getElementById('view-count');
     const likeBtn = document.getElementById('like-btn');
     const likeCountEl = document.getElementById('like-count');
-
-    const LOCAL_VIEWS_KEY = `${ISSUE_KEY}-views-fallback`;
-    const LOCAL_LIKES_KEY = `${ISSUE_KEY}-likes-fallback`;
-    const LIKED_FLAG_KEY = `${ISSUE_KEY}-liked`;
-
-    function extractCount(data) {
-      if (!data) return null;
-      if (typeof data.count === 'number') return data.count;
-      if (data.data && typeof data.data.up_count === 'number') return data.data.up_count;
-      if (data.data && typeof data.data.count === 'number') return data.data.count;
-      return null;
-    }
-
-    // Views: increments on every page load, falls back to a local counter
-    // if the API is unreachable or blocked.
-    fetch(VIEW_URL)
-      .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
-      .then(data => {
-        const count = extractCount(data);
-        if (count === null) throw new Error('unexpected response shape');
-        viewEl.textContent = count.toLocaleString();
-      })
-      .catch(() => {
-        const fallback = parseInt(localStorage.getItem(LOCAL_VIEWS_KEY) || '0', 10) + 1;
-        localStorage.setItem(LOCAL_VIEWS_KEY, String(fallback));
-        viewEl.textContent = fallback.toLocaleString();
-      });
-
-    // Likes: read the current count without incrementing, then wire up the button.
-    const alreadyLiked = localStorage.getItem(LIKED_FLAG_KEY) === 'true';
-    let currentLikes = parseInt(localStorage.getItem(LOCAL_LIKES_KEY) || '0', 10);
 
     function setLikedState() {
       likeBtn.classList.add('text-emerald-400', 'border-emerald-400/50');
@@ -233,37 +198,31 @@
       likeBtn.style.cursor = 'default';
     }
 
-    fetch(LIKES_READ_URL)
+    // Record a view, then show the current like count.
+    fetch(`${API_BASE}/api/view`, { method: 'POST' })
       .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
-      .then(data => {
-        const count = extractCount(data);
-        if (count !== null) currentLikes = count;
-        likeCountEl.textContent = currentLikes.toLocaleString();
-      })
-      .catch(() => {
-        likeCountEl.textContent = currentLikes.toLocaleString();
-      });
+      .then(data => { viewEl.textContent = data.views.toLocaleString(); })
+      .catch(() => { viewEl.textContent = '—'; });
 
-    if (alreadyLiked) setLikedState();
+    fetch(`${API_BASE}/api/stats`)
+      .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+      .then(data => { likeCountEl.textContent = data.likes.toLocaleString(); })
+      .catch(() => { likeCountEl.textContent = '—'; });
+
+    if (localStorage.getItem(LIKED_FLAG_KEY) === 'true') setLikedState();
 
     likeBtn.addEventListener('click', () => {
       if (localStorage.getItem(LIKED_FLAG_KEY) === 'true') return;
       setLikedState();
 
-      fetch(LIKES_UP_URL)
+      fetch(`${API_BASE}/api/like`, { method: 'POST' })
         .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
         .then(data => {
-          const count = extractCount(data);
-          const newCount = count !== null ? count : currentLikes + 1;
           localStorage.setItem(LIKED_FLAG_KEY, 'true');
-          localStorage.setItem(LOCAL_LIKES_KEY, String(newCount));
-          likeCountEl.textContent = newCount.toLocaleString();
+          likeCountEl.textContent = data.likes.toLocaleString();
         })
         .catch(() => {
-          const newCount = currentLikes + 1;
           localStorage.setItem(LIKED_FLAG_KEY, 'true');
-          localStorage.setItem(LOCAL_LIKES_KEY, String(newCount));
-          likeCountEl.textContent = newCount.toLocaleString();
         });
     });
   })();

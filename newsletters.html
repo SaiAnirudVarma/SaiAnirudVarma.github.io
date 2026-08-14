@@ -183,7 +183,7 @@
         </p>
       </div>
 
-      <form id="subscribeForm" action="https://formspree.io/f/xkjwzolq" method="POST" class="flex flex-col sm:flex-row gap-3 max-w-xl">
+      <form id="subscribeForm" class="flex flex-col sm:flex-row gap-3 max-w-xl">
         <input
           type="email"
           name="email"
@@ -278,8 +278,9 @@
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
 
-  // Subscribe form (Formspree, AJAX)
+  // Subscribe form (FastAPI backend, AJAX)
   (function initSubscribeForm() {
+    const API_BASE = 'https://portfolio-backend-ychi.onrender.com';
     const form = document.getElementById('subscribeForm');
     if (!form) return;
     const btn = document.getElementById('subscribeBtn');
@@ -291,10 +292,7 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      // Snapshot the form fields before disabling anything — disabled form
-      // controls are excluded from FormData, so disabling the email input
-      // first would submit an empty body.
-      const formData = new FormData(form);
+      const email = emailInput.value;
       errorEl.classList.add('hidden');
       btn.disabled = true;
       emailInput.disabled = true;
@@ -302,15 +300,21 @@
       btnText.textContent = 'Submitting...';
 
       try {
-        const res = await fetch(form.action, {
+        const res = await fetch(`${API_BASE}/api/subscribe`, {
           method: 'POST',
-          body: formData,
-          headers: { Accept: 'application/json' },
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
         });
-        if (!res.ok) throw new Error('bad response');
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.detail || 'bad response');
+        }
         form.classList.add('hidden');
         successEl.classList.remove('hidden');
       } catch (err) {
+        errorEl.textContent = err.message === 'Already subscribed!'
+          ? "You're already on the list!"
+          : 'Something went wrong. Please try again.';
         errorEl.classList.remove('hidden');
         btn.disabled = false;
         emailInput.disabled = false;
@@ -321,44 +325,23 @@
   })();
 
   // Archive card counters — read-only (must not increment issue-01's view
-  // count just because the card was listed here). Shares the same
-  // CounterAPI keys and localStorage fallback keys as issue-01.html so the
-  // numbers stay consistent across pages.
+  // count just because the card was listed here).
   (function initArchiveCounters() {
-    const ISSUE_KEY = 'issue-01';
-    const VIEWS_READ_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}`;
-    const LIKES_READ_URL = `https://api.counterapi.dev/v1/sai_portfolio/${ISSUE_KEY}-likes`;
-    const LOCAL_VIEWS_KEY = `${ISSUE_KEY}-views-fallback`;
-    const LOCAL_LIKES_KEY = `${ISSUE_KEY}-likes-fallback`;
-
+    const API_BASE = 'https://portfolio-backend-ychi.onrender.com';
     const viewsEl = document.getElementById('views-01');
     const likesEl = document.getElementById('likes-01');
     if (!viewsEl || !likesEl) return;
 
-    function extractCount(data) {
-      if (!data) return null;
-      if (typeof data.count === 'number') return data.count;
-      if (data.data && typeof data.data.up_count === 'number') return data.data.up_count;
-      if (data.data && typeof data.data.count === 'number') return data.data.count;
-      return null;
-    }
-
-    function loadCount(url, localKey, targetEl) {
-      fetch(url)
-        .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
-        .then(data => {
-          const count = extractCount(data);
-          if (count === null) throw new Error('unexpected response shape');
-          targetEl.textContent = count.toLocaleString();
-        })
-        .catch(() => {
-          const fallback = parseInt(localStorage.getItem(localKey) || '0', 10);
-          targetEl.textContent = fallback.toLocaleString();
-        });
-    }
-
-    loadCount(VIEWS_READ_URL, LOCAL_VIEWS_KEY, viewsEl);
-    loadCount(LIKES_READ_URL, LOCAL_LIKES_KEY, likesEl);
+    fetch(`${API_BASE}/api/stats`)
+      .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+      .then(data => {
+        viewsEl.textContent = data.views.toLocaleString();
+        likesEl.textContent = data.likes.toLocaleString();
+      })
+      .catch(() => {
+        viewsEl.textContent = '—';
+        likesEl.textContent = '—';
+      });
   })();
 </script>
 
