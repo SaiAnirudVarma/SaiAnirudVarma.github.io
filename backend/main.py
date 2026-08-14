@@ -114,15 +114,20 @@ def subscribe(payload: SubscribeRequest):
     if subscribers_collection.find_one({"email": email}):
         raise HTTPException(status_code=400, detail="Already subscribed!")
 
-    subscribers_collection.insert_one({"email": email})
+    try:
+        resend.Emails.send(
+            {
+                "from": "onboarding@resend.dev",
+                "to": email,
+                "subject": "You're in — welcome to The Full-Stack AI Playbook 🚀",
+                "html": WELCOME_EMAIL_HTML,
+            }
+        )
+    except resend.exceptions.ResendError as exc:
+        raise HTTPException(
+            status_code=502, detail="Could not send welcome email."
+        ) from exc
 
-    resend.Emails.send(
-        {
-            "from": "onboarding@resend.dev",
-            "to": email,
-            "subject": "You're in — welcome to The Full-Stack AI Playbook 🚀",
-            "html": WELCOME_EMAIL_HTML,
-        }
-    )
+    subscribers_collection.insert_one({"email": email})
 
     return {"message": "Subscribed successfully!"}
