@@ -290,6 +290,46 @@
     const successEl = document.getElementById('subscribeSuccess');
     const errorEl = document.getElementById('subscribeError');
 
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+    // The backend's free-tier host spins down when idle, so the first
+    // request after a quiet period can hang or bounce off the platform's
+    // proxy before the instance finishes waking up. Retry transient
+    // failures a couple of times before giving up; a real "already
+    // subscribed" rejection (400) is not retried.
+    async function subscribeWithRetry(email, attempt = 1) {
+      const maxAttempts = 3;
+      let res;
+      try {
+        res = await fetch(`${API_BASE}/api/subscribe`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+      } catch (networkErr) {
+        if (attempt < maxAttempts) {
+          btnText.textContent = 'Waking up server...';
+          await sleep(4000);
+          return subscribeWithRetry(email, attempt + 1);
+        }
+        throw networkErr;
+      }
+
+      if (res.status === 400) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.detail || 'Already subscribed!');
+      }
+      if (!res.ok) {
+        if (attempt < maxAttempts) {
+          btnText.textContent = 'Waking up server...';
+          await sleep(4000);
+          return subscribeWithRetry(email, attempt + 1);
+        }
+        throw new Error('bad response');
+      }
+      return res.json();
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = emailInput.value;
@@ -300,15 +340,7 @@
       btnText.textContent = 'Submitting...';
 
       try {
-        const res = await fetch(`${API_BASE}/api/subscribe`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.detail || 'bad response');
-        }
+        await subscribeWithRetry(email);
         form.classList.add('hidden');
         successEl.classList.remove('hidden');
       } catch (err) {
