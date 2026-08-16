@@ -121,7 +121,7 @@ def subscribe(payload: SubscribeRequest):
     try:
         resend.Emails.send(
             {
-                "from": "onboarding@resend.dev",
+                "from": "newsletter@saianirudvarma.is-a.dev",
                 "to": email,
                 "subject": "You're in — welcome to The Full-Stack AI Playbook 🚀",
                 "html": WELCOME_EMAIL_HTML,
