@@ -249,6 +249,39 @@
         </div>
       </a>
 
+      <!-- Issue #02 -->
+      <a href="issue-02.html" class="reveal lift-card block rounded-2xl border border-white/10 bg-base-900/60 p-8">
+        <div class="flex items-start justify-between mb-5 gap-4 flex-wrap">
+          <div class="w-11 h-11 rounded-lg bg-emerald-400/10 flex items-center justify-center text-emerald-400 shrink-0">
+            <i data-lucide="newspaper" class="w-5 h-5"></i>
+          </div>
+          <div class="flex items-center gap-3 text-xs text-slate-500 uppercase tracking-widest">
+            <span>August 28, 2026</span>
+            <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+            <span>6 min read</span>
+          </div>
+        </div>
+
+        <p class="text-xs text-emerald-400 uppercase tracking-widest mb-2">Issue #02</p>
+        <h4 class="font-display text-xl md:text-2xl font-semibold text-white mb-1">GraphRAG: Knowledge Graphs Meet Vector DBs</h4>
+        <p class="text-sm text-slate-500 mb-4">Mapping multi-hop entity relationships that vector search alone can't detect</p>
+        <p class="text-sm text-slate-400 leading-relaxed mb-6">
+          Combining knowledge graphs with vector databases to map multi-hop entity relationships that pure vector search can never detect.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">#GraphRAG</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">#KnowledgeGraphs</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">#Neo4j</span>
+          <span class="tag-chip text-[11px] px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-emerald-400/50 hover:text-emerald-400">#VectorDB</span>
+        </div>
+
+        <div class="flex items-center gap-5 text-xs text-slate-500 pt-5 border-t border-white/5">
+          <span class="flex items-center gap-1.5">👁️ <span id="views-02">--</span> Views</span>
+          <span class="flex items-center gap-1.5">❤️ <span id="likes-02">--</span> Likes</span>
+        </div>
+      </a>
+
       <!-- Add future issue cards here (duplicate the block above, update href to issue-0N.html) -->
 
     </div>
@@ -365,28 +398,36 @@
     });
   })();
 
-  // Archive card counters — read-only (must not increment issue-01's view
-  // count just because the card was listed here).
+  // Archive card counters — read-only (must not increment an issue's view
+  // count just because its card was listed here). Each issue's stats are
+  // tracked separately by the backend, so each card fetches its own.
+  // To add issue-03's card: add its id to ISSUE_IDS below.
   (function initArchiveCounters() {
     const API_BASE = 'https://portfolio-backend-ychi.onrender.com';
-    const viewsEl = document.getElementById('views-01');
-    const likesEl = document.getElementById('likes-01');
+    const ISSUE_IDS = ['issue-01', 'issue-02'];
     const subscriberCountEl = document.getElementById('subscriberCount');
+    let subscribersShown = false;
 
-    fetch(`${API_BASE}/api/stats`)
-      .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
-      .then(data => {
-        if (viewsEl) viewsEl.textContent = typeof data.views === 'number' ? data.views.toLocaleString() : '—';
-        if (likesEl) likesEl.textContent = typeof data.likes === 'number' ? data.likes.toLocaleString() : '—';
-        if (subscriberCountEl) {
-          subscriberCountEl.textContent = typeof data.subscribers === 'number' ? data.subscribers.toLocaleString() : '—';
-        }
-      })
-      .catch(() => {
-        if (viewsEl) viewsEl.textContent = '—';
-        if (likesEl) likesEl.textContent = '—';
-        if (subscriberCountEl) subscriberCountEl.textContent = '—';
-      });
+    ISSUE_IDS.forEach(issueId => {
+      const viewsEl = document.getElementById(`views-${issueId.split('-')[1]}`);
+      const likesEl = document.getElementById(`likes-${issueId.split('-')[1]}`);
+
+      fetch(`${API_BASE}/api/stats?issue=${issueId}`)
+        .then(res => { if (!res.ok) throw new Error('bad response'); return res.json(); })
+        .then(data => {
+          if (viewsEl) viewsEl.textContent = typeof data.views === 'number' ? data.views.toLocaleString() : '—';
+          if (likesEl) likesEl.textContent = typeof data.likes === 'number' ? data.likes.toLocaleString() : '—';
+          if (subscriberCountEl && !subscribersShown) {
+            subscribersShown = true;
+            subscriberCountEl.textContent = typeof data.subscribers === 'number' ? data.subscribers.toLocaleString() : '—';
+          }
+        })
+        .catch(() => {
+          if (viewsEl) viewsEl.textContent = '—';
+          if (likesEl) likesEl.textContent = '—';
+          if (subscriberCountEl && !subscribersShown) subscriberCountEl.textContent = '—';
+        });
+    });
   })();
 </script>
 
