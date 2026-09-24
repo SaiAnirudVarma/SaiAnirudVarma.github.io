@@ -18,9 +18,26 @@ db = client.get_default_database("portfolio")
 stats_collection = db["stats"]
 subscribers_collection = db["subscribers"]
 
-STATS_ID = "global"
+DEFAULT_ISSUE = "issue-01"
 
 app = FastAPI()
+
+
+def _migrate_legacy_global_stats():
+    """One-time migration: stats used to live in a single '_id: global' doc
+    before per-issue tracking existed. Move that history onto 'issue-01' (the
+    only issue that existed at the time) so it isn't lost."""
+    legacy = stats_collection.find_one({"_id": "global"})
+    if legacy is None:
+        return
+    if stats_collection.find_one({"_id": DEFAULT_ISSUE}) is None:
+        stats_collection.insert_one(
+            {"_id": DEFAULT_ISSUE, "likes": legacy.get("likes", 0), "views": legacy.get("views", 0)}
+        )
+    stats_collection.delete_one({"_id": "global"})
+
+
+_migrate_legacy_global_stats()
 
 app.add_middleware(
     CORSMiddleware,
@@ -71,17 +88,17 @@ WELCOME_EMAIL_HTML = """\
 """
 
 
-def _get_or_create_stats():
-    stats = stats_collection.find_one({"_id": STATS_ID})
+def _get_or_create_stats(issue: str):
+    stats = stats_collection.find_one({"_id": issue})
     if stats is None:
-        stats = {"_id": STATS_ID, "likes": 0, "views": 0}
+        stats = {"_id": issue, "likes": 0, "views": 0}
         stats_collection.insert_one(stats)
     return stats
 
 
 @app.get("/api/stats")
-def get_stats():
-    stats = _get_or_create_stats()
+def get_stats(issue: str = DEFAULT_ISSUE):
+    stats = _get_or_create_stats(issue)
     return {
         "likes": stats["likes"],
         "views": stats["views"],
@@ -90,9 +107,9 @@ def get_stats():
 
 
 @app.post("/api/like")
-def like():
+def like(issue: str = DEFAULT_ISSUE):
     stats = stats_collection.find_one_and_update(
-        {"_id": STATS_ID},
+        {"_id": issue},
         {"$inc": {"likes": 1}, "$setOnInsert": {"views": 0}},
         upsert=True,
         return_document=ReturnDocument.AFTER,
@@ -101,9 +118,9 @@ def like():
 
 
 @app.post("/api/view")
-def view():
+def view(issue: str = DEFAULT_ISSUE):
     stats = stats_collection.find_one_and_update(
-        {"_id": STATS_ID},
+        {"_id": issue},
         {"$inc": {"views": 1}, "$setOnInsert": {"likes": 0}},
         upsert=True,
         return_document=ReturnDocument.AFTER,
